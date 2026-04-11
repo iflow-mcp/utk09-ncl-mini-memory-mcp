@@ -3,6 +3,7 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio";
 import express from "express";
 import process from "process";
 import cors from "cors";
+import { memoryRouter } from "./routes.js";
 
 const isStdio = process.argv.includes("--stdio");
 const PORT = parseInt(process.env.PORT ?? "5172", 10);
@@ -32,6 +33,8 @@ if (isStdio) {
       message: "mini-memory MCP server is running."
     });
   });
+
+  app.use("/api/memories", memoryRouter);
 
   app.listen(PORT, () => {
     console.log(`mini-memory MCP server is running on port ${PORT}`);
