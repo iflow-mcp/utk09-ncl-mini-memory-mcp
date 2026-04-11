@@ -8,13 +8,14 @@ const isStdio = process.argv.includes("--stdio");
 const PORT = parseInt(process.env.PORT ?? "5172", 10);
 
 if (isStdio) {
+  // In MCP mode the process speaks over stdio instead of starting an HTTP server.
   const server = new McpServer({ name: "mini-memory", version: "1.0.0" });
   const transport = new StdioServerTransport();
   await server.connect(transport);
   process.stderr.write("mini-memory MCP server is running in stdio mode.\n");
 
-  // process.on("SIGINT", () => process.exit(0));
   process.on("SIGINT", async () => {
+    // Close the MCP server first so clients do not see an abrupt disconnect.
     process.stderr.write("Shutting down mini-memory MCP server...\n");
     await server.close();
     process.exit(0);
@@ -25,6 +26,7 @@ if (isStdio) {
   app.use(express.json());
 
   app.get("/", (req, res) => {
+    // Lightweight health endpoint for browser checks and local debugging.
     res.status(200).json({
       status: "ok",
       message: "mini-memory MCP server is running."

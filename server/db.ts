@@ -12,6 +12,8 @@ mkdirSync(DATA_DIR, { recursive: true });
 
 let _db: Database.Database | null = null;
 
+/** Returns the shared SQLite connection, creating it on first use.
+ * Also applies pragmas and initializes schema exactly once. */
 export function getDb(): Database.Database {
   if (!_db) {
     _db = new Database(DB_PATH);
@@ -22,6 +24,8 @@ export function getDb(): Database.Database {
   return _db;
 }
 
+/** Creates the base tables, FTS index, and sync triggers if they do not exist.
+ * This keeps the database self-initializing for local development. */
 function initSchema(db: Database.Database): void {
   db.exec(`
     CREATE TABLE IF NOT EXISTS memories (
