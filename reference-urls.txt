@@ -1,0 +1,40 @@
+# Reference links for mini-memory-mcp and related tools
+
+# Serena project
+https://github.com/oraios/serena
+
+# Claude memory project
+https://github.com/thedotmack/claude-mem
+
+# Current repo
+https://github.com/utk09-NCL/mini-memory-mcp
+
+# MCP docs
+https://modelcontextprotocol.io/docs/getting-started/intro
+
+# Vite home
+https://vite.dev/
+
+# Vite guide
+https://vite.dev/guide/
+
+# Axios issue reference
+https://github.com/axios/axios/issues/10604
+
+# VS Code React snippets extension
+https://marketplace.visualstudio.com/items?itemName=dsznajder.es7-react-js-snippets
+
+# SQLite FTS5 docs
+https://www.sqlite.org/fts5.html
+
+# HTTP status codes reference
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status
+
+# Claude article about caveman mode
+https://tech.yahoo.com/ai/claude/articles/devs-making-claude-talk-caveman-130102145.html
+
+# Caveman skill repo
+https://github.com/JuliusBrussee/caveman
+
+# Caveman skill site
+https://juliusbrussee.github.io/caveman/
