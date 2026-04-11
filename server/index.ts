@@ -4,13 +4,22 @@ import express from "express";
 import process from "process";
 import cors from "cors";
 import { memoryRouter } from "./routes.js";
+import { getDb } from "./db.js";
+import path from "path";
+import { fileURLToPath } from "url";
+import { registerMemoryTools } from "./mcp-tools.js";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const isStdio = process.argv.includes("--stdio");
 const PORT = parseInt(process.env.PORT ?? "5172", 10);
 
+getDb(); // Ensure database is initialized before handling any requests
+
 if (isStdio) {
   // In MCP mode the process speaks over stdio instead of starting an HTTP server.
   const server = new McpServer({ name: "mini-memory", version: "1.0.0" });
+  registerMemoryTools(server);
   const transport = new StdioServerTransport();
   await server.connect(transport);
   process.stderr.write("mini-memory MCP server is running in stdio mode.\n");
