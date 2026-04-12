@@ -12,13 +12,23 @@ import {
 } from "./memory-store.js";
 
 /** Instructions for compressing memory content */
-const COMPRESS_RULE =
-  "IMPORTANT - write content in compressed shorthand, skip articles and conjunctions, and use abbreviations where possible." +
-  "use symbols -> leads to, = is, != is not, & and, | or, / per, > is greater than, < is less than, >> prefers, << less prefers." +
-  "common abbreviations(e.g.w / for with, w / o for without)." +
-  "use short forms for common words(e.g. info for information, num for number, usr for user, proj for project, cfg for configuration, fn for function, var for variable, etc.)." +
-  "use camelCase for multi-word concepts(e.g. projectDeadline, userFeedback, etc.)." +
-  "Keep under 100 words per memory.";
+const COMPRESS_RULES = [
+  "WRITE COMPRESSED: ",
+  // What to remove
+  "Drop articles (a/an/the), filler (just/really/basically/actually/simply), ",
+  "pleasantries (sure/certainly/of course), hedging (might be worth/could consider), ",
+  "connective fluff (however/furthermore/additionally). ",
+  // How to compress
+  "Use fragments & short synonyms: 'fix' not 'implement a solution for', 'use' not 'utilize'. ",
+  "State actions directly: 'run tests before push' not 'you should make sure to run tests'. ",
+  // Symbols & abbreviations
+  "Symbols: →=leads to, &=and, w/=with, +=also, >>=prefer, @=at, vs=versus. ",
+  "Abbreviations: cfg=config, fn=function, impl=implementation, req=required, ",
+  "opt=optional, env=environment, dep=dependency, repo=repository, dev=development, ",
+  "auth=authentication, db=database, pkg=package, msg=message, err=error, usr=user. ",
+  // Limits
+  "Keep under 100 words. Preserve all technical terms, code, paths, URLs exactly.",
+].join("");
 
 /**
  * Registers MCP tools related to memory management.
@@ -26,23 +36,21 @@ const COMPRESS_RULE =
  */
 export function registerMemoryTools(server: McpServer): void {
   // List all memories
-  server.registerTool("memory_list", {
-    description: "List all saved memories, newest first. Optionally filter by tags, e.g. tag1:abc,tag2:def. CALL THIS AT THE START OF EVERY SESSION BEFORE DOING ANY WORK.",
-    inputSchema: {
-      tags: z.array(z.string())
-        .optional()
-        .describe("Optional list of tags to filter memories, e.g. ['tag1:abc', 'tag2:def']. All provided tags must match. Omit to list all memories.")
+  server.registerTool(
+    "memory_list",
+    {
+      description:
+        `List all saved memories (newest first). MUST be called at the start of every session to load prior context before doing any work. Use tags parameter to filter by category when the list is large.`,
+      inputSchema: {
+        tags: z
+          .array(z.string())
+          .optional()
+          .describe("Filter: return only memories matching ALL provided tags. Omit to list everything."),
+      },
     },
-  },
     async ({ tags }) => {
       const memories = listMemories(tags);
-      return {
-        content: [
-          {
-            type: "text",
-            text: JSON.stringify(memories)
-          }
-        ]
-      }
-    });
+      return { content: [{ type: "text" as const, text: JSON.stringify(memories) }] };
+    },
+  );
 }
