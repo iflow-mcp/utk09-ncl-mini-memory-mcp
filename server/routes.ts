@@ -28,7 +28,12 @@ memoryRouter.get("/:id", (req, res) => {
 // POST /api/memories - Create a new memory
 // Body: { title: string, content: string, tags?: string[] }
 memoryRouter.post("/", (req, res) => {
+  if (typeof req.body !== "object" || req.body === null) {
+    return res.status(400).json({ status: "error", message: "Request body must be a JSON object" });
+  }
+
   const { title, content, tags } = req.body;
+
   if (typeof title !== "string" || typeof content !== "string") {
     return res.status(400).json({ status: "error", message: "Title and content are required and must be strings" });
   }
@@ -40,7 +45,12 @@ memoryRouter.post("/", (req, res) => {
 // PUT /api/memories/:id - Update an existing memory by ID
 // Body: { title?: string, content?: string, tags?: string[] }
 memoryRouter.put("/:id", (req, res) => {
+  if (typeof req.body !== "object" || req.body === null) {
+    return res.status(400).json({ status: "error", message: "Request body must be a JSON object" });
+  }
+
   const { title, content, tags } = req.body;
+
   if (title !== undefined && typeof title !== "string") {
     return res.status(400).json({ status: "error", message: "Title must be a string" });
   }
@@ -66,6 +76,10 @@ memoryRouter.put("/:id", (req, res) => {
 
 // DELETE /api/memories/:id - Delete a memory by ID
 memoryRouter.delete("/:id", (req, res) => {
+  if (typeof req.params === null) {
+    return res.status(400).json({ status: "error", message: "Memory ID is required in the URL path" });
+  }
+
   const success = deleteMemory(req.params.id);
   if (!success) {
     return res.status(404).json({ status: "error", message: "Memory not found" });
