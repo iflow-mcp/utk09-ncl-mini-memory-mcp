@@ -38,3 +38,6 @@ https://github.com/JuliusBrussee/caveman
 
 # Caveman skill site
 https://juliusbrussee.github.io/caveman/
+
+# Agents.md - a resource for agent-based AI development
+https://agents.md/
