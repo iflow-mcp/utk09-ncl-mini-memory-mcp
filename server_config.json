@@ -1,1 +1,1 @@
-{"serverConfig": "{\"mcpServers\":{\"mini-memory-mcp\":{\"command\":\"npx\",\"args\":[\"-y\",\"@iflow-mcp/utk09-ncl-mini-memory-mcp@1.0.2\"],\"values\":{}}}}"}
+{"serverConfig": "{\"mcpServers\":{\"mini-memory-mcp\":{\"command\":\"npx\",\"args\":[\"-y\",\"@iflow-mcp/utk09-ncl-mini-memory-mcp@1.0.3\"],\"values\":{}}}}"}
